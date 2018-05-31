@@ -5,37 +5,35 @@
 </head>
 <?php
 
-include "connection.php";
+use webshop\Movie;
+use webshop\SqlController;
+
+include "class_loader.php";
 
 $movieid = $_GET['movieid'];
+
+$conn = SqlController::getConnection();
 
 $sql = "SELECT * FROM products WHERE id = '$movieid'";
 $query = mysqli_query($conn, $sql);
 
 $row = $query->fetch_assoc();
-$moviedatabaseid = $row['id'];
-$movie_title = $row['title'];
-$cover_picture = $row['cover_picture'];
-$backdrop_image = 'movieBackdrops/'.$row['backdrop'];
-$releaseYear = $row['release_year'];
-$desc = $row['description'];
-$directors = $row['directors'];
-$price = $row['price'];
-$actorId = $row['actor_id']
+$movie = new Movie($row);
+
 ?>
 <body id="movieInfoBody" style="background-image: url('<?php echo $backdrop_image?>'); background-repeat: no-repeat; background-size: cover; position: absolute; color: white">
 <?php
 echo "<div> 
-<img src='movieCovers/{$cover_picture}' alt='Cover Picture of $movie_title'></div>
+<img src='movieCovers/{$movie->getCoverPicture()}' alt='Cover Picture of {$movie->getTitle()}'></div>
 <ul style='font'>
         <li>
           ";
-              echo $movie_title;
-              echo $releaseYear;
-              echo $price.'kr';
-              echo $desc;
-              echo $directors;
-              echo $actorId;"  
+              echo $movie->getTitle();
+              echo $movie->getReleaseYear();
+              echo $movie->getPrice().'kr';
+              echo $movie->getDescription();
+              echo $movie->getDirectors();
+              echo $movie->getActors();"  
         </li>
       </ul>";
 

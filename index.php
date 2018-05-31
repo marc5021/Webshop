@@ -7,9 +7,16 @@
 </head>
 <body>
 
-<?php include "connection.php";
+<?php
 
+use webshop\SqlController;
+include "class_loader.php";
+
+
+$conn = SqlController::getConnection();
+$query = $conn->query('SELECT * FROM products');
 ?>
+
 <div class="feed">
 <!--  This is supposed to be one of the "feeds"-->
 <h1> New Movies </h1>
